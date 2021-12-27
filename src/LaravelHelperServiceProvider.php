@@ -23,6 +23,6 @@ class LaravelHelperServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        require_once 'ExcelMacro.php';
     }
 }

@@ -1,8 +1,6 @@
 <?php
 declare(strict_types = 1);
 
-namespace Blacky0892\LaravelHelper;
-
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Writer;
 
@@ -81,7 +79,3 @@ Writer::macro(
         $writer->getDelegate()->getProperties()->setCreator($creator);
     }
 );
-
-abstract class ExcelMacro
-{
-}
