@@ -24,5 +24,6 @@ class LaravelHelperServiceProvider extends ServiceProvider
     public function boot()
     {
         require_once 'ExcelMacro.php';
+        require_once 'functions.php';
     }
 }
