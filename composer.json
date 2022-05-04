@@ -29,7 +29,10 @@
         "laravel": {
             "providers": [
                 "Blacky0892\\LaravelHelper\\LaravelHelperServiceProvider"
-            ]
+            ],
+            "aliases" : {
+                "LaravelHelper": "Blacky0892\\LaravelHelper\\Facades\\LaravelHelper"
+            }
         }
     }
 }

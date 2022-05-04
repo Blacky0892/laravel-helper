@@ -1,5 +1,8 @@
 <?php
+/** @noinspection PhpDynamicAsStaticMethodCallInspection */
 declare(strict_types = 1);
+
+use Blacky0892\LaravelHelper\Facades\LaravelHelper;
 
 if (!function_exists('format_phone')) {
     /**
@@ -25,104 +28,128 @@ if (!function_exists('substr_words')) {
      */
     function substr_words(?string $text, int $maxChar, string $end = '...'): string
     {
-        if(is_null($text)) return '';
-        // Удаление лишних пробелов
-        $text = preg_replace('/\s+/', ' ', $text);
-        if (mb_strlen($text) > $maxChar && $text !== '') {
-            $words  = preg_split('/\s/', $text);
-            $output = '';
-            foreach ($words as $word) {
-                $length = mb_strlen($output) + mb_strlen($word);
-                if ($length > $maxChar) {
-                    break;
-                } else {
-                    $output .= " " . $word;
-                }
-            }
-            $output .= $end;
-        } else {
-            $output = $text;
-        }
-
-        return $output;
+        return LaravelHelper::substrWords($text, $maxChar, $end);
     }
 }
 
 if (!function_exists('random_color_part')) {
     function random_color_part(): string
     {
-        return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+        return LaravelHelper::randomColorPart();
     }
 }
 
 if (!function_exists('random_color')) {
     function random_color(): string
     {
-        return random_color_part() . random_color_part() . random_color_part();
+        return LaravelHelper::randomColor();
     }
 }
 
 if (!function_exists('random_color_hex')) {
     function random_color_hex(): string
     {
-        return '#' . random_color();
+        return LaravelHelper::randomColorHex();
     }
 }
 
 if(!function_exists('decl_of_num')){
+    /**
+     * Склонение в зависимости от числительного
+     * @param  int  $number - числительное
+     * @param  array  $titles - варианты склонений для 1,2,5
+     * @return string
+     */
     function decl_of_num(int $number, array $titles) : string
     {
-        $cases = [2, 0, 1, 1, 1, 2];
-        $cacheNumber = $number % 100 > 4 && $number % 100 < 20 ? 2 : $cases[min($number % 10, 5)];
-        return $titles[$cacheNumber];
+        return LaravelHelper::declOfNum($number, $titles);
     }
 }
 
 
 if(!function_exists('search_for_id'))
 {
-    function search_for_id($array, $key, $val) {
-        foreach ($array as $k => $v) {
-            if ($v[$key] === $val) {
-                return $k;
-            }
-        }
-        return null;
+    /**
+     * Поиск подмассива в массиве по определённому значению
+     * @param array $array - массив
+     * @param string $key - ключ, по которому происходит поиск
+     * @param mixed $val
+     * @return string|null
+     */
+    function search_for_id(array $array, string $key, $val): ?string
+    {
+        return LaravelHelper::searchForId($array, $key, $val);
     }
 }
 if (!function_exists('mb_strrev')) {
-    function mb_strrev($str): string
+    /**
+     * Многобайтовый переворот строки
+     * @param  string  $str
+     * @return string
+     */
+    function mb_strrev(string $str): string
     {
-        $r = '';
-        for ($i = mb_strlen($str); $i >= 0; $i--) {
-            $r .= mb_substr($str, $i, 1);
-        }
-
-        return $r;
+        return LaravelHelper::mbStrrev($str);
     }
 }
 
 if (!function_exists('mb_ucfirst')) {
-    function mb_ucfirst($str): string
+    /**
+     * Первая заглавная буква для многобайтовых кодировок
+     * @param  string  $str
+     * @return string
+     */
+    function mb_ucfirst(string $str): string
     {
-        $fc = mb_strtoupper(mb_substr($str, 0, 1));
-
-        return $fc.mb_substr($str, 1);
+        return LaravelHelper::mbUcfirst($str);
     }
 }
 
 if (!function_exists('getFileInfo')) {
     function getFileInfo($files): array
     {
-        $info = [];
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                $info[] = array_merge(['file' => $file], pathinfo($file));
-            }
-        } else {
-            $info = array_merge(['file' => $files], pathinfo($files));
-        }
+        return LaravelHelper::getFileInfo($files);
+    }
+}
 
-        return $info;
+if(!function_exists('clear_phone_number')){
+    /**
+     * Очистка номера телефона от посторонних символов для сохранения в базе
+     * @param  string  $phoneNumber
+     * @return string
+     */
+    function clear_phone_number(string $phoneNumber): string
+    {
+        return LaravelHelper::clearPhoneNumber($phoneNumber);
+    }
+}
+
+if(!function_exists('check_phone')){
+    /**
+     * Проверка, что введённая информация является корректным номером телефона
+     * @param  string|null  $phoneNumber
+     * @return bool
+     */
+    function check_phone(?string $phoneNumber): bool
+    {
+        return LaravelHelper::checkPhone($phoneNumber);
+    }
+}
+
+if (!function_exists('format_phone_number')) {
+    /**
+     * Форматирование телефонного номера для вывода на экран
+     * Если цифр в номере больше 10, формат: +X(XXX)XXX-XXXX
+     * Если цифр ровно 10, формат: (XXX)XXX-XXXX
+     * Если цифр ровно 7, формат: ХХХ-ХХХХ
+     * В других случаях форматирование не производится
+     *
+     * @param  string|null  $phoneNumber  номер телефона
+     *
+     * @return string
+     */
+    function format_phone_number(?string $phoneNumber, string $country = '+7'): ?string
+    {
+        return LaravelHelper::formatPhoneNumber($phoneNumber, $country);
     }
 }

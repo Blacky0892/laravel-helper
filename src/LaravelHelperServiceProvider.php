@@ -13,7 +13,7 @@ class LaravelHelperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('laravel-helper', \Blacky0892\LaravelHelper\Helper::class);
     }
 
     /**
