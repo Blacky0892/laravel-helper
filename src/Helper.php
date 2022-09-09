@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Blacky0892\LaravelHelper;
 
+use Carbon\Carbon;
+
 class Helper
 {
     /**
@@ -201,5 +203,87 @@ class Helper
         }
 
         return $result;
+    }
+
+    /**
+     * Генерация случайного пароля
+     * @param  int  $len  - Длина пароля
+     * @param  int|null  $maxCharsCount - Максимальное количество спецсимволов
+     * @return string
+     */
+    function randomPassword(int $len = 8, ?int $maxCharsCount = 2): string
+    {
+        if($len < 8) $len = 8;
+
+        // Наборы символов
+        $sets = [];
+        // Заглавные буквы
+        $sets[0] = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        // Строчные буквы
+        $sets[1] = 'abcdefghjkmnpqrstuvwxyz';
+        // Цифры
+        $sets[2] = '23456789';
+        // Спец символы
+        $sets[3]  = '!@#$%?';
+
+        $password = '';
+
+        // Первые 4 символа - по одному случайному из каждого набора
+        foreach ($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+        }
+
+        $chars = 1;
+
+        // Оставшиеся символы случайные из всех наборов
+        while(strlen($password) < $len) {
+            $key = array_rand($sets);
+            if($key === 3 && $chars >= $maxCharsCount){
+                continue;
+            }
+            else{
+                // Выбираем случайный набор
+                $randomSet = $sets[$key];
+                if($key === 3) $chars++;
+            }
+
+
+            // Берем случайный символ из этого набора
+            $password .= $randomSet[array_rand(str_split($randomSet))];
+        }
+
+        // Перемешиваем строку
+        return str_shuffle($password);
+    }
+
+    /**
+     * Получение учебного года
+     *
+     * @param  Carbon  $date     Дата, для которой надо узнать
+     *                                      учебный год
+     * @param  Carbon|null $firstSep Начало учебного года
+     *
+     * @return null|string
+     */
+    public function getSchoolYear(Carbon $date, Carbon $firstSep = null): ?string
+    {
+        $year = $date->year; // год даты
+        // Если не указано начало учебного года, считаем начало как 1 сентября этого года
+        if(is_null($firstSep)){
+            $firstSep = Carbon::create($year, '09', '01');
+        }
+        if($firstSep < Carbon::create('2010', '01', '01')){
+            return null;
+        }
+
+        // Если текущая дата > начала учебного года, возвращаем текущий год + следующий
+        if($date >= $firstSep){
+            $schoolYear = $firstSep->year . '/' . ($firstSep->year + 1);
+        } // Если текущая дата < начала учебного года, вызываем функцию еще раз, уменьшаем год на 1
+        else{
+            return $this->getSchoolYear($date, $firstSep->subYear());
+        }
+
+        return $schoolYear;
     }
 }

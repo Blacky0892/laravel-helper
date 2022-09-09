@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Blacky0892\LaravelHelper\Facades\LaravelHelper;
+use Carbon\Carbon;
 
 if (!function_exists('format_phone')) {
     /**
@@ -151,5 +152,34 @@ if (!function_exists('format_phone_number')) {
     function format_phone_number(?string $phoneNumber, string $country = '+7'): ?string
     {
         return LaravelHelper::formatPhoneNumber($phoneNumber, $country);
+    }
+}
+
+if (!function_exists('randomPassword')) {
+    /**
+     * Генерация случайного пароля
+     * @param  int  $len  - Длина пароля
+     * @param  int|null  $maxCharsCount - Максимальное количество спецсимволов
+     * @return string
+     */
+    function randomPassword(int $len = 8, ?int $maxCharsCount = 2)
+    {
+        return LaravelHelper::randomPassword($len, $maxCharsCount);
+    }
+}
+
+if (!function_exists('getSchoolYear')) {
+    /**
+     * Получение учебного года
+     *
+     * @param  Carbon  $date     Дата, для которой надо узнать
+     *                                      учебный год
+     * @param  Carbon|null $firstSep Начало учебного года
+     *
+     * @return null|string
+     */
+    function getSchoolYear(Carbon $date, Carbon $firstSep = null): ?string
+    {
+        return LaravelHelper::getSchoolYear($date, $firstSep);
     }
 }
