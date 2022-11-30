@@ -59,6 +59,18 @@ Sheet::macro(
     }
 );
 
+Sheet::macro(
+    'setHeight',
+    function (Sheet $sheet, $row, ?float $height = null) {
+        if(is_array($row)){
+            foreach ($row as $name => $height){
+                $sheet->getDelegate()->getRowDimension($name)->setRowHeight($height);
+            }
+        }
+        else $sheet->getDelegate()->getRowDimension($row)->setRowHeight($height);
+    }
+);
+
 Writer::macro(
     'setDefaultProperties',
     function (Writer $writer) {

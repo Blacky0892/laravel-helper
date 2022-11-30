@@ -76,7 +76,7 @@ class Helper
         $cases       = [2, 0, 1, 1, 1, 2];
         $cacheNumber = $number % 100 > 4 && $number % 100 < 20 ? 2 : $cases[min($number % 10, 5)];
 
-        return $titles[$cacheNumber];
+        return $titles[$cacheNumber] ?? $titles[$cacheNumber - 1];
     }
 
     /**
@@ -285,5 +285,23 @@ class Helper
         }
 
         return $schoolYear;
+    }
+
+    /**
+     * Случайное число с пропусками
+     * @param $from
+     * @param $to
+     * @param  array  $excluded Числа, исключаемые из случайных
+     * @return int
+     */
+    function randomNumber($from, $to, array $excluded = []): int
+    {
+        $func = function_exists('random_int') ? 'random_int' : 'mt_rand';
+
+        do {
+            $number = $func($from, $to);
+        } while (in_array($number, $excluded, true));
+
+        return $number;
     }
 }

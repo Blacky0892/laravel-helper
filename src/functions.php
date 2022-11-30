@@ -183,3 +183,17 @@ if (!function_exists('getSchoolYear')) {
         return LaravelHelper::getSchoolYear($date, $firstSep);
     }
 }
+
+if (!function_exists('randomNumber')) {
+    /**
+     * Случайное число с пропусками
+     * @param $from
+     * @param $to
+     * @param  array  $excluded Числа, исключаемые из случайных
+     * @return int
+     */
+    function randomNumber($from, $to, array $excluded = []): int
+    {
+        return LaravelHelper::randomNumber($from, $to, $excluded);
+    }
+}
