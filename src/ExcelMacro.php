@@ -41,6 +41,21 @@ Sheet::macro(
 );
 
 Sheet::macro(
+    'setFillByColor',
+    function (Sheet $sheet, string $cellRange, string $color) {
+        $sheet->styleCells(
+            $cellRange,
+            [
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color'    => ['argb' => $color],
+                ],
+            ]
+        );
+    }
+);
+
+Sheet::macro(
     'hideColumn',
     function (Sheet $sheet, string $column) {
         $sheet->getDelegate()->getColumnDimension($column)->setVisible(false);
