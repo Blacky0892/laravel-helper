@@ -82,18 +82,38 @@ class Helper
     /**
      * Поиск в массиве по определённому значению
      * @param array $array - массив
-     * @param string $key - ключ, по которому происходит поиск
+     * @param mixed $key - ключ, по которому происходит поиск
      * @param mixed $val
      * @return string|null
      */
-    function searchForId(array $array, string $key, $val) : ?string
+    function searchForId(array $array, $key, $val)
     {
         foreach ($array as $k => $v) {
-            if ($v[$key] === $val) {
-                return $k;
+            if(gettype($v) === 'object'){
+                if ($v->$key === $val) {
+                    return (string) $k;
+                }
+            }
+            else{
+                if ($v[$key] === $val) {
+                    return (string) $k;
+                }
             }
         }
         return null;
+    }
+
+    /**
+     * Поиск в массиве по определенному значению. Возвращает значение из соответствующего ключа
+     * @param  array  $array
+     * @param mixed $key - ключ, по которому происходит поиск
+     * @param mixed $val - значение для поиска
+     * @param mixed $returnKey - ключ для возврата значения
+     * @return mixed
+     */
+    function searchById(array $array, $key, $val, $returnKey)
+    {
+        return $array[$this->searchForId($array, $key, $val)][$returnKey];
     }
 
     /**

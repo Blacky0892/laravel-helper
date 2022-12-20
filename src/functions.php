@@ -73,15 +73,32 @@ if(!function_exists('search_for_id'))
     /**
      * Поиск подмассива в массиве по определённому значению
      * @param array $array - массив
-     * @param string $key - ключ, по которому происходит поиск
+     * @param mixed $key - ключ, по которому происходит поиск
      * @param mixed $val
-     * @return string|null
+     * @return mixed
      */
-    function search_for_id(array $array, string $key, $val): ?string
+    function search_for_id(array $array, string $key, $val)
     {
         return LaravelHelper::searchForId($array, $key, $val);
     }
 }
+
+if(!function_exists('search_by_id'))
+{
+    /**
+     * Поиск в массиве по определенному значению. Возвращает значение из соответствующего ключа
+     * @param  array  $array
+     * @param mixed $key - ключ, по которому происходит поиск
+     * @param mixed $val - значение для поиска
+     * @param mixed $returnKey - ключ для возврата значения
+     * @return mixed
+     */
+    function search_by_id(array $array, $key, $val, $returnKey)
+    {
+        return LaravelHelper::searchById($array, $key, $val, $returnKey);
+    }
+}
+
 if (!function_exists('mb_strrev')) {
     /**
      * Многобайтовый переворот строки
