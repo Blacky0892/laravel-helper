@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Blacky0892\LaravelHelper;
 
+use Blacky0892\LaravelHelper\Facades\LaravelHelper;
 use Carbon\Carbon;
 
 class Helper
@@ -323,5 +324,26 @@ class Helper
         } while (in_array($number, $excluded, true));
 
         return $number;
+    }
+
+    /**
+     * Случайный код, создается из букв и цифр
+     * @param  int  $letters - количество букв в коде
+     * @param  int  $numbers - количество цифр в коде
+     * @return string
+     * @throws \Exception
+     */
+    function randomCode(int $letters, int $numbers): string
+    {
+        $code = '';
+        for ($i = 0; $i < $letters; $i++)
+        {
+            $code .= iconv('CP1251', 'UTF-8', chr($this->randomNumber(192, 223, [211, 213])));
+        }
+        for ($i = 0; $i < $numbers; $i++)
+        {
+            $code .= random_int(0, 9);
+        }
+        return $code;
     }
 }

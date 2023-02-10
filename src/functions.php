@@ -214,3 +214,17 @@ if (!function_exists('randomNumber')) {
         return LaravelHelper::randomNumber($from, $to, $excluded);
     }
 }
+
+if (!function_exists('randomCode')) {
+    /**
+     * Случайный код, создается из букв и цифр
+     * @param  int  $letters - количество букв в коде
+     * @param  int  $numbers - количество цифр в коде
+     * @return string
+     * @throws \Exception
+     */
+    function randomCode(int $letters, int $numbers): string
+    {
+        return LaravelHelper::randomCode($letters, $numbers);
+    }
+}
